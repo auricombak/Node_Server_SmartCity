@@ -53,6 +53,9 @@ router.get('/users', function(req, res){
 router.post('/delete', function(req, res){
 	var id = req.body.select;
 	req.user.commerces.pull(id);
+	Commerce.removeCommerce(id, function(err, commerce){
+		console.log("BABABA"+commerce);
+	});
 	req.user.save(function(err, user){
 		User.getCommerces(user._id, function(err, commerces){
 			if(err) throw err;
@@ -71,7 +74,7 @@ router.post('/', function(req, res){
 	var nom = req.body.nom;
 	var marque = req.body.marque;
 	var adresse = req.body.adresse;
-	var categorie = req.body.categorie;
+	var categorie = req.body.categorie.split(" ");
 	var latitude ;
 	var longitude ;
 
@@ -101,8 +104,6 @@ router.post('/', function(req, res){
 		var newCommerce = new Commerce({
 			nom: nom,
 			marque: marque,
-			categorie: [],
-			sAbonnes : [],
 			position : {
 				lat : latitude, 
 				lng : longitude,
@@ -110,15 +111,17 @@ router.post('/', function(req, res){
 			}
 		});
 
+		for(var i=0;i<categorie.length;i++){
+			newCommerce.categories.push(categorie[i]);
+		}
+
 		Commerce.createCommerce(newCommerce, function(err, commerce){
 			if(err) throw err;
-			console.log(commerce);
-
+			console.log("Ajout commerce : "+commerce.nom);
 
 			req.user.commerces.push(commerce._id);
 			req.user.save(function(err, user){
 				if(err) throw err;
-				console.log("Après modification : "+user);
 			});
 		
 		
@@ -152,6 +155,8 @@ router.get('/commerces', function(req, res){
 	});	
 });
 
+//A modifier pour l'api accessible via android
+//Get commerce by distance
 router.get('/commercesD', function(req, res){
 	var position = { latitude : "43.625599" , longitude : "3.861361" };
 	Commerce.getCommercesByDistances(position,1, function(err, commerces){
@@ -161,4 +166,29 @@ router.get('/commercesD', function(req, res){
 		res.json(commerces);
 	});	
 });
+
+//A modifier pour l'api accessible via android
+//Get Commerce by name
+router.get('/commercesN', function(req, res){
+	var name = "name";
+	Commerce.getCommercesByName(position,1, function(err, commerce){
+		if(err){
+			throw err;
+		}
+		res.json(commerce);
+	});	
+});
+
+//A modifier pour l'api accessible via android
+//Get Commerces by array of category
+router.get('/commercesC', function(req, res){
+	var categories = ["indien"];
+	Commerce.getCommercesByCategories(categories, function(err, commerces){
+		if(err){
+			throw err;
+		}
+		res.json(commerces);
+	});	
+});
+
 module.exports = router;

@@ -97,22 +97,15 @@ module.exports.getCommerceById = function(id, callback){
     Commerce.findById(id, callback);
 }
 
-// Get Commerce by ville
-module.exports.getCommerceByVille = function(vil, callback){
-    var query = { position : { ville : vil }};
-    Commerce.find(query, callback);
+// Get Commerce by category
+module.exports.getCommercesByCategories = function(req, callback){
+    Commerce.find({categories : {$in : req}},callback);      
 }
 
-// Get Commerce by quartier
-module.exports.getCommerceByQuartier = function(qua, callback){
-    var query = { position : { quartier : qua }};
-    Commerce.find(query, callback);
-}
-
-// Get Commerce by departement
-module.exports.getCommerceByDepartement = function(dep, callback){
-    var query = { position : { departement : dep }};
-    Commerce.find(query, callback);
+// Get Commerce by name
+module.exports.getCommerceByName = function(name, callback){
+    var query = { nom : name };
+    Commerce.findOne(query, callback);
 }
 
 // Add Commerce
@@ -122,12 +115,13 @@ module.exports.createCommerce = function(commerce, callback){
 
 // Ajoute un utilisateur 
 //Si ça merche pas ajouter user._id
-module.exports.addAbonne = function(id,user,callback){
-    Commerce.findById(id, callback).sAbonnes.push(user);
+module.exports.addAbonne = function(id,user_id,callback){
+    Commerce.findById(id, callback).sAbonnes.push(user_id);
 }
 
 // Delete Commerce
 module.exports.removeCommerce = function(id, callback){
-    var query = {_id:id};
-    Commerce.remove(query, callback);
+    Commerce.findByIdAndRemove(id, function(err,commerce){
+        callback(err,commerce );
+    })
 }
