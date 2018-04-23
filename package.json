@@ -1,0 +1,30 @@
+{
+  "name": "serverforandroid",
+  "version": "1.0.0",
+  "description": "Serveur pour l'application Ville Futée",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Faidherbe Loïs & Mohri Salem",
+  "license": "ISC",
+  "dependencies": {
+    "@google/maps": "^0.4.6",
+    "bcryptjs": "*",
+    "body-parser": "*",
+    "connect-flash": "*",
+    "cookie-parser": "^1.4.1",
+    "express": "*",
+    "express-handlebars": "*",
+    "express-messages": "*",
+    "express-session": "*",
+    "express-validator": "*",
+    "geocoder": "^0.2.3",
+    "googlemaps": "^1.12.0",
+    "mongodb": "*",
+    "mongoose": "*",
+    "passport": "*",
+    "passport-http": "*",
+    "passport-local": "*"
+  }
+}
