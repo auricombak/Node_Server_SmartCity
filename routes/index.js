@@ -1,4 +1,6 @@
-
+//  +___________________________________+ 
+//  | API pour l'application commercant |
+//  |___________________________________|
 
 var express = require('express');
 var router = express.Router();
@@ -9,6 +11,7 @@ var mongoose = require('mongoose');
 
 var User = require('../models/user');
 var Commerce = require('../models/commerce');
+var Offre = require('../models/offres');
 
 var googleMapsClient = require('@google/maps').createClient({
 	key: 'AIzaSyAPsN7xhUSMDdgG8adlUfShMsvjhErgtiQ '
@@ -36,11 +39,12 @@ function ensureAuthenticated(req, res, next){
 	}
 }
 
+//Affiche l'utilisateur connecté
 router.get('/me', ensureAuthenticated, function(req, res){
 	res.json(req.user);
 });
 	
-
+//Affiche la liste des commercants
 router.get('/users', function(req, res){
 	User.getUsers(function(err, users){
 		if(err){
@@ -50,11 +54,12 @@ router.get('/users', function(req, res){
 	});	
 });
 
+//Supprime le commerce selectionné
 router.post('/delete', function(req, res){
 	var id = req.body.select;
 	req.user.commerces.pull(id);
 	Commerce.removeCommerce(id, function(err, commerce){
-		console.log("BABABA"+commerce);
+		console.log("Supression : "+commerce);
 	});
 	req.user.save(function(err, user){
 		User.getCommerces(user._id, function(err, commerces){
@@ -69,7 +74,14 @@ router.post('/delete', function(req, res){
 	});	
 });
 
-// Add Commerce to an user 
+//Ajoute une offre de commerce selectionné
+router.post('/offre', function(req, res){
+	var id = req.body.select;
+
+	Offre.crea
+});
+
+// Creation d'un commerce et liaison avec le commercant 
 router.post('/', function(req, res){
 	var nom = req.body.nom;
 	var marque = req.body.marque;
@@ -91,8 +103,7 @@ router.post('/', function(req, res){
 		});
 	} else {
 
-		//TODO : split la categorie en array et lui donner l'array
-		// Geocode an address.
+		// Transforme l'adresse en position avec l'api google.
 		googleMapsClient.geocode({
 			address: adresse
   		}, function(err, response) {
@@ -100,7 +111,7 @@ router.post('/', function(req, res){
 			latitude = response.json.results[0].geometry.location.lat;
 			longitude = response.json.results[0].geometry.location.lng;
 		
-		 
+		 //Creation d'une variable commerce contenant les informations données
 		var newCommerce = new Commerce({
 			nom: nom,
 			marque: marque,
@@ -111,10 +122,12 @@ router.post('/', function(req, res){
 			}
 		});
 
+		//Ajout un par un des catégories dans la variable de commerce
 		for(var i=0;i<categorie.length;i++){
 			newCommerce.categories.push(categorie[i]);
 		}
 
+		//Création en BDD du commerce et ajout de celui-ci à la liste de commerces de l'utilisateur connecté
 		Commerce.createCommerce(newCommerce, function(err, commerce){
 			if(err) throw err;
 			console.log("Ajout commerce : "+commerce.nom);
@@ -137,6 +150,7 @@ router.post('/', function(req, res){
 	}
 });
 
+//Réccupère les commerces de l'utilisateurs
 router.get('/commercesMe', function(req, res){
 	User.getCommerces(req.user._id, function(err, commerces){
 		if(err){
@@ -146,49 +160,51 @@ router.get('/commercesMe', function(req, res){
 	});	
 });
 
-router.get('/commerces', function(req, res){
-	Commerce.getCommerces( function(err, commerces){
-		if(err){
-			throw err;
-		}
-		res.json(commerces);
-	});	
-});
 
-//A modifier pour l'api accessible via android
-//Get commerce by distance
-router.get('/commercesD', function(req, res){
-	var position = { latitude : "43.625599" , longitude : "3.861361" };
-	Commerce.getCommercesByDistances(position,1, function(err, commerces){
-		if(err){
-			throw err;
-		}
-		res.json(commerces);
-	});	
-});
 
-//A modifier pour l'api accessible via android
-//Get Commerce by name
-router.get('/commercesN', function(req, res){
-	var name = "name";
-	Commerce.getCommercesByName(position,1, function(err, commerce){
-		if(err){
-			throw err;
-		}
-		res.json(commerce);
-	});	
-});
-
-//A modifier pour l'api accessible via android
-//Get Commerces by array of category
-router.get('/commercesC', function(req, res){
-	var categories = ["indien"];
-	Commerce.getCommercesByCategories(categories, function(err, commerces){
-		if(err){
-			throw err;
-		}
-		res.json(commerces);
-	});	
-});
 
 module.exports = router;
+
+
+/*
+__________________________________________________________
+Commerce.removeCommerce = function(id, callback);
+Commerce.addAbonne = function(id,user_id,callback);
+Commerce.createCommerce = function(commerce, callback);
+Commerce.getCommerceByName = function(name, callback);
+Commerce.getCommercesByCategories = function(req, callback);
+Commerce.getCommerceById = function(id, callback);
+Commerce.getCommerces = function(limit, callback);
+Commerce.getCommerces = function(limit, callback);
+__________________________________________________________
+User.getUsers = function(callback, limit);
+User.getCommerces = function(id, callback);
+User.createUser = function(newUser, callback);
+User.getUserByUsername = function(username, callback);
+User.getUserById = function(id,callback);
+User.comparePassword = function(candidatePassword, hash, callback);
+__________________________________________________________
+UserApp.getUserByEmail = function(email, callback)
+UserApp.createUser = function(newUser, callback)
+UserApp.getUserById = function(id, callback)
+UserApp.getCommerces = function(id,callback)
+UserApp.updateUser = function(id, info, callback)
+UserApp.updateUser = function(id, setting, callback)
+__________________________________________________________
+ReseauSocial.getAdmin = function(id, callback)
+ReseauSocial.getAbonnes = function(id, callback)
+ReseauSocial.getReseauxSociauxAbonne = function(id,callback)
+ReseauSocial.getReseauxSociauxAdmin = function(id,callback)
+ReseauSocial.getReseauSocialById = function(limit, callback)
+ReseauSocial.getReseauSocialById = function(id, callback)
+ReseauSocial.getReseauSocialByName = function(name, callback)
+ReseauSocial.createReseauSocial = function(newReseau, callback)
+__________________________________________________________
+Offre.getUserById = function(req,callback)
+Offre.getUserById = function(id,callback)
+Offre.getOffreByPreferences = function(req, callback)
+Offre.createOffre = function(newOffre, callback)
+Offre.getCommerce = function(id, callback)
+Offre.getUsers = function(callback, limit)
+
+*/

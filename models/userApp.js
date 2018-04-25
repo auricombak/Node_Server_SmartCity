@@ -1,35 +1,24 @@
 var mongoose = require('mongoose');
-var bcrypt = require('bcryptjs');
-
-
 
 // User Schema
 var UserAppSchema = mongoose.Schema({
-    email: {
+    idFire: {
         type: String,
-        required: true,
         index:true
 	},
-    password: {
-        type: String, 
-        required: true
-	},
+    notifications: [String],
     infoUser:{
         pseudo:{
-            type: String, 
-            required: false        
+            type: String       
         },
         phone: {
-            type: Number, 
-            required: false
+            type: Number 
         },
         surname: {
-            type: String, 
-            required: false
+            type: String
         },
         name: {
-            type: String, 
-            required: false
+            type: String
         },
         birth: {
             type: Date, 
@@ -37,62 +26,116 @@ var UserAppSchema = mongoose.Schema({
             required: false
         },
         sexe: {
-            type: Boolean, 
-            required: false
+            type: Boolean
         }
     },
     preferences : [String],
     settingActualite :{
         calendrierParamChecked :{
-            type: Boolean,
-            required: false
+            type: Boolean
         },
         meteoParamChecked :{
-            type: Boolean,
-            required: false
+            type: Boolean
         },
         actualiteParamChecked :{
-            type: Boolean,
-            required: false
+            type: Boolean
         },
         alarmParamChecked :{
-            type: Boolean,
-            required: false
+            type: Boolean
         },       
         traficParamChecked :{
-            type: Boolean,
-            required: false
+            type: Boolean
         }
     },
-    reseauSociaux :[{type: Schema.ObjectId, ref: 'ReseauSocialSchema'}],
-    reseauSociauxAdmin :[{type: Schema.ObjectId, ref: 'ReseauSocialSchema'}],
-    commerces :[{type: Schema.ObjectId, ref: 'CommerceSchema'}],
-    notifications :[{type: String}]
+    commerces :[{type: Schema.ObjectId, ref: 'Commerce'}]
 });
 
-var User = module.exports = mongoose.model('User', UserSchema);
+var UserApp = module.exports = mongoose.model('UserApp', UserAppSchema);
 
+//Create UserApp 
 module.exports.createUser = function(newUser, callback){
-	bcrypt.genSalt(10, function(err, salt) {
-	    bcrypt.hash(newUser.password, salt, function(err, hash) {
-	        newUser.password = hash;
-	        newUser.save(callback);
-	    });
-	});
+	newUser.save(callback);
 }
 
-module.exports.getUserByUsername = function(username, callback){
-	var query = {username: username};
-	User.findOne(query, callback);
+//Get UserApp by email
+module.exports.getUserByEmail = function(email, callback){
+	var query = {email: email};
+	UserApp.findOne(query, callback);
 }
 
+//Get UserById
 module.exports.getUserById = function(id, callback){
-	User.findById(id, callback);
+    var query = {idFire:id};
+	UserApp.findOne(query, callback);
 }
 
-module.exports.comparePassword = function(candidatePassword, hash, callback){
-	bcrypt.compare(candidatePassword, hash, function(err, isMatch) {
-    	if(err) throw err;
-    	callback(null, isMatch);
+//Get Commerces
+module.exports.getCommerces = function(id,callback){
+    var query = {idFire:id};
+	UserApp.findOne(query)
+        .populate( 'Commerce')
+		.exec(function(err, user){
+			callback(err, user.commerces);
 	});
 }
+
+//Update settingActualite
+module.exports.updateUser = function(id, info, callback){
+    var query = {idFire:id};
+    var update ={
+        infoUser: info
+    }
+    UserApp.findOneAndUpdate(query, update, callback);
+}
+
+//Update infoUser
+module.exports.updateUser = function(id, setting, callback){
+    var query = {idFire:id};
+    var update ={
+        settingActualite: setting
+    }
+    UserApp.findOneAndUpdate(query, update, callback);
+}
+
+/*
+__________________________________________________________
+Commerce.removeCommerce = function(id, callback);
+Commerce.addAbonne = function(id,user_id,callback);
+Commerce.createCommerce = function(commerce, callback);
+Commerce.getCommerceByName = function(name, callback);
+Commerce.getCommercesByCategories = function(req, callback);
+Commerce.getCommerceById = function(id, callback);
+Commerce.getCommerces = function(limit, callback);
+Commerce.getCommerces = function(limit, callback);
+__________________________________________________________
+User.getUsers = function(callback, limit);
+User.getCommerces = function(id, callback);
+User.createUser = function(newUser, callback);
+User.getUserByUsername = function(username, callback);
+User.getUserById = function(id,callback);
+User.comparePassword = function(candidatePassword, hash, callback);
+__________________________________________________________
+UserApp.getUserByEmail = function(email, callback)
+UserApp.createUser = function(newUser, callback)
+UserApp.getUserById = function(id, callback)
+UserApp.getCommerces = function(id,callback)
+UserApp.updateUser = function(id, info, callback)
+UserApp.updateUser = function(id, setting, callback)
+__________________________________________________________
+ReseauSocial.getAdmin = function(id, callback)
+ReseauSocial.getAbonnes = function(id, callback)
+ReseauSocial.getReseauxSociauxAbonne = function(id,callback)
+ReseauSocial.getReseauxSociauxAdmin = function(id,callback)
+ReseauSocial.getReseauSocialById = function(limit, callback)
+ReseauSocial.getReseauSocialById = function(id, callback)
+ReseauSocial.getReseauSocialByName = function(name, callback)
+ReseauSocial.createReseauSocial = function(newReseau, callback)
+__________________________________________________________
+Offre.getUserById = function(req,callback)
+Offre.getUserById = function(id,callback)
+Offre.getOffreByPreferences = function(req, callback)
+Offre.createOffre = function(newOffre, callback)
+Offre.getCommerce = function(id, callback)
+Offre.getUsers = function(callback, limit)
+
+*/

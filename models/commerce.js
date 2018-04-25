@@ -14,10 +14,6 @@ var CommerceSchema = mongoose.Schema({
         type: String
     },
 	categories: [String],
-	sAbonnes: [{
-        type: mongoose.Schema.ObjectId, 
-        ref: 'userApp'
-    }],
     position: {
         lat: {
             type: String
@@ -34,7 +30,6 @@ var CommerceSchema = mongoose.Schema({
         default:Date.now
     }
 });
-
 
 
 var Commerce = module.exports = mongoose.model('Commerce', CommerceSchema);
@@ -65,7 +60,7 @@ function distance(position1,position2){
 }
 
 // Get array of the n nearest commerces from a position. 
-module.exports.getCommercesByDistances = function(position, limit, callback){
+module.exports.getCommerces = function(limit, callback){
     Commerce.find(function(err, commerces){
         try{
             var result = [];
@@ -88,8 +83,10 @@ module.exports.getCommercesByDistances = function(position, limit, callback){
 }
 
 // Get all Commerce
-module.exports.getCommerces = function(callback, limit){
-    Commerce.find(callback).limit(limit);
+module.exports.getCommerces = function(limit, callback){
+    Commerce.find()
+    .limit(limit)
+    .exec(callback);
 }
 
 // Get Commerce by Id
@@ -110,7 +107,7 @@ module.exports.getCommerceByName = function(name, callback){
 
 // Add Commerce
 module.exports.createCommerce = function(commerce, callback){
-    commerce.save(commerce, callback);
+    commerce.save(callback);
 }
 
 // Ajoute un utilisateur 
@@ -125,3 +122,4 @@ module.exports.removeCommerce = function(id, callback){
         callback(err,commerce );
     })
 }
+

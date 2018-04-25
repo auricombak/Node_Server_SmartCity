@@ -56,13 +56,6 @@ module.exports.getUserByUsername = function(username, callback){
 	User.findOne(query, callback);
 }
 
-//Add commerce
-/*module.exports.addCommerce = function(user, id_commerce, callback){
-	 user.commerces.push(id_commerce, function(err, user){
-		user.save(callback);
-	});	
-}*/
-
 //GET User by ID
 module.exports.getUserById = function(id,callback){
 	User.findById(id,callback );
@@ -75,3 +68,5 @@ module.exports.comparePassword = function(candidatePassword, hash, callback){
     	callback(null, isMatch);
 	});
 }
+
+
