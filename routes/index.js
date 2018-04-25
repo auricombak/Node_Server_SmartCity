@@ -11,7 +11,7 @@ var mongoose = require('mongoose');
 
 var User = require('../models/user');
 var Commerce = require('../models/commerce');
-var Offre = require('../models/offres');
+var Offre = require('../models/offre');
 
 var googleMapsClient = require('@google/maps').createClient({
 	key: 'AIzaSyAPsN7xhUSMDdgG8adlUfShMsvjhErgtiQ '
@@ -74,12 +74,7 @@ router.post('/delete', function(req, res){
 	});	
 });
 
-//Ajoute une offre de commerce selectionné
-router.post('/offre', function(req, res){
-	var id = req.body.select;
 
-	Offre.crea
-});
 
 // Creation d'un commerce et liaison avec le commercant 
 router.post('/', function(req, res){
@@ -161,50 +156,43 @@ router.get('/commercesMe', function(req, res){
 });
 
 
+//Ajoute une offre de commerce selectionné
+router.post('/offre', function(req, res){
+	var idCommerce = req.body.select;
+	var titre = req.body.titre;
+	var message = req.body.message;
+	var tags = req.body.tags.split(" ");
+
+	req.checkBody('titre', 'Un titre pour l\'offre est necessaire').notEmpty();
+	req.checkBody('message', 'Un message pour l\'offre est necessaire').notEmpty();
+
+	//Creation d'une variable Offre contenant les informations données
+	var newOffre = new Offre({
+		titre: titre,
+		description : message,
+		commerce: idCommerce
+	});
+			
+	//Ajout un par un des preférences dans la variable de Offre
+	for(var i=0;i<tags.length;i++){
+		newOffre.preferences.push(tags[i]);
+	}
+
+	Offre.createOffre(newOffre, function(err, offre){
+		if(err) throw err;
+		console.log("Ajout de l'offre : "+ offre.titre);
+
+	req.flash('success_msg', 'Votre Offre a bien été crée !');
+
+	res.redirect('/');
+	});
+
+});
+
+
+
 
 
 module.exports = router;
 
 
-/*
-__________________________________________________________
-Commerce.removeCommerce = function(id, callback);
-Commerce.addAbonne = function(id,user_id,callback);
-Commerce.createCommerce = function(commerce, callback);
-Commerce.getCommerceByName = function(name, callback);
-Commerce.getCommercesByCategories = function(req, callback);
-Commerce.getCommerceById = function(id, callback);
-Commerce.getCommerces = function(limit, callback);
-Commerce.getCommerces = function(limit, callback);
-__________________________________________________________
-User.getUsers = function(callback, limit);
-User.getCommerces = function(id, callback);
-User.createUser = function(newUser, callback);
-User.getUserByUsername = function(username, callback);
-User.getUserById = function(id,callback);
-User.comparePassword = function(candidatePassword, hash, callback);
-__________________________________________________________
-UserApp.getUserByEmail = function(email, callback)
-UserApp.createUser = function(newUser, callback)
-UserApp.getUserById = function(id, callback)
-UserApp.getCommerces = function(id,callback)
-UserApp.updateUser = function(id, info, callback)
-UserApp.updateUser = function(id, setting, callback)
-__________________________________________________________
-ReseauSocial.getAdmin = function(id, callback)
-ReseauSocial.getAbonnes = function(id, callback)
-ReseauSocial.getReseauxSociauxAbonne = function(id,callback)
-ReseauSocial.getReseauxSociauxAdmin = function(id,callback)
-ReseauSocial.getReseauSocialById = function(limit, callback)
-ReseauSocial.getReseauSocialById = function(id, callback)
-ReseauSocial.getReseauSocialByName = function(name, callback)
-ReseauSocial.createReseauSocial = function(newReseau, callback)
-__________________________________________________________
-Offre.getUserById = function(req,callback)
-Offre.getUserById = function(id,callback)
-Offre.getOffreByPreferences = function(req, callback)
-Offre.createOffre = function(newOffre, callback)
-Offre.getCommerce = function(id, callback)
-Offre.getUsers = function(callback, limit)
-
-*/

@@ -60,7 +60,7 @@ function distance(position1,position2){
 }
 
 // Get array of the n nearest commerces from a position. 
-module.exports.getCommerces = function(limit, callback){
+module.exports.getCommercesByDistances = function(position,limit, callback){
     Commerce.find(function(err, commerces){
         try{
             var result = [];

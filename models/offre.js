@@ -26,15 +26,18 @@ var OffreSchema = mongoose.Schema({
 var Offre = module.exports = mongoose.model('Offre', OffreSchema);
 
 
-// Get all Offres
-module.exports.getUsers = function(callback, limit){
-    Offre.find(callback).limit(limit);
+// Get n Offres
+module.exports.getOffres = function(limit, callback){
+    var limite = parseInt(limit);
+    Offre.find()
+    .limit(limite)
+    .exec(callback);
 }
 
 // Get Commerce from Offre
 module.exports.getCommerce = function(id, callback){
 	User.findById(id)
-		.populate('commerce')
+		.populate('Commerce')
 		.exec(function(err, offre){
 			callback(err, offre.commerces);
 	});
@@ -50,17 +53,30 @@ module.exports.getOffreByPreferences = function(req, callback){
     Offre.find({preferences : {$in : req}},callback);      
 }
 
+// Get Offres by Name
+module.exports.getOffreByTitre = function(req, callback){
+    Offre.find({titre : req},callback);      
+}
+
 //Get offre by ID
-module.exports.getUserById = function(id,callback){
+module.exports.getOffreById = function(id,callback){
 	Offre.findById(id,callback );
 }
 
 //Get offres by marque
-module.exports.getUserById = function(req,callback){
-	User.find()
-        .populate( 'commerce', null, { marque: req } )
+module.exports.getOffreByMarque = function(req,callback){
+	Offre.find()
+        .populate( 'Commerce', null, { marque: req } )
 		.exec(function(err, offre){
 			callback(err, offre.commerce);
 	});
 }
 
+// Get Offre from CommerceID
+module.exports.getOffreFromCommerceId = function(id, callback){
+	Offre.find()
+		.populate('Commerce', null, { _id: id })
+		.exec(function(err, offre){
+			callback(err, offre);
+	});
+}

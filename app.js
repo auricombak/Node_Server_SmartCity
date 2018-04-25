@@ -18,6 +18,7 @@ var api = require('./routes/api');
 var routes = require('./routes/index');
 var users = require('./routes/users');
 var commerce = require('./routes/commerce');
+var offre = require('./routes/offre');
 
 // Init App
 var app = express();
@@ -80,7 +81,8 @@ app.use(function (req, res, next) {
 
 
 app.use('/api', api);
-app.use('/api/commerce', commerce);
+app.use('/api/commerces', commerce);
+app.use('/api/offres', offre);
 app.use('/', routes);
 app.use('/users', users);
 

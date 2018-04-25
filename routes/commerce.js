@@ -40,12 +40,12 @@ router.get('/:_lat/:_lng/:_limit', function(req, res){
 	});	
 });
 
-//A modifier pour l'api accessible via android
+
 //Get Commerce by name
-router.get('/:_nom', function(req, res){
+router.get('/nom/:_nom', function(req, res){
     var name = req.params._nom;
     console.log(name);
-	Commerce.getCommercesByName(position,1, function(err, commerce){
+	Commerce.getCommerceByName(name, function(err, commerce){
 		if(err){
 			throw err;
 		}
