@@ -1,3 +1,8 @@
+Sécurité : 
+
+Les actions se font via les _id crées dans la base mongo 
+Le passage par paramètre des ids Firebase est vérifié
+
 +_______+
 |       |
 | API : | 
@@ -13,6 +18,12 @@ __________________________________________________________
 
 |> /api/offres/nom/:nom 
 | Renvoie les offres par leurs nom
+
+|> /api/offres/commerce/:_id
+|   Renvoir le commerce d'une offre d'id :_id
+
+|> /api/offres/commerces/:_id
+| Renvoie toute les offres d'un commerce d'id :_id
 __________________________________________________________
 
 |> /api/commerces/:_lat/:_lng/:_n
@@ -28,7 +39,39 @@ __________________________________________________________
 
 |> /api/commerces/:_n
 | Renvoie n commerces
+
 __________________________________________________________
+
+|>post: /api/reseauSocial/addAbonne
+| { idUser : '', idReseau : '' } Ajoute un utilisateur à un réseau
+
+|>post: /api/reseauSocial/addAbonne/RP
+| { idUserAdmin : '', idUser : '', idReseau : '' } Ajoute un utilisateur à un réseau privé
+
+|>get: /api/reseauSocial/isAbonne/:_idA/:_idR
+| Renvoie true si l'user d'id _idA est abonne au reseau d'id _idR
+
+|>get: /api/reseauSocial/isAdmin/:_idA/:_idR
+| Renvoie true si l'user d'id _idA est admin au reseau d'id _idR
+
+|>post: /api/reseauSocial/message/:_idR/:_idU
+| Verifie si l'user d'id _idU est membre du réseau d'id _idR
+| si oui poste le message { titre : '', auteur : '', corp: '' }
+
+|>post: /api/reseauSocial/:_idU
+| Crée un reseau social d'admin :_idU
+| {nom : String, description : String, public : Boolean  }
+
+|>get: /api/reseauSocial/?preferences=preference1&preferences=preference2
+| Récupère les réseaux sociaux dont les préférences 
+| sont dans l'array preferences
+
+|>get: /api/reseauSocial/:_limit
+| Récupère les n réseaux Sociaux définis par :_limit
+
+|>get: /api/reseauSocial/nom/:_nom
+| Récupère les réseaus Sociaux par noms :_nom 
+
 
 +_____________________________+
 |                             |
@@ -63,12 +106,12 @@ ReseauSocial.getAdmin = function(id, callback)
 ReseauSocial.getAbonnes = function(id, callback)
 ReseauSocial.getReseauxSociauxAbonne = function(id,callback)
 ReseauSocial.getReseauxSociauxAdmin = function(id,callback)
-ReseauSocial.getReseauSocialById = function(limit, callback)
+ReseauSocial.getReseauSociaux = function(limit, callback)
 ReseauSocial.getReseauSocialById = function(id, callback)
 ReseauSocial.getReseauSocialByName = function(name, callback)
 ReseauSocial.createReseauSocial = function(newReseau, callback)
 __________________________________________________________
-Offre.getOffreByMarque = function(req,callback)
+Offre.getOffresByMarque = function(req,callback)
 Offre.getOffreById = function(id,callback)
 Offre.getOffreByPreferences = function(req, callback)
 Offre.createOffre = function(newOffre, callback)

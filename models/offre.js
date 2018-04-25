@@ -36,10 +36,10 @@ module.exports.getOffres = function(limit, callback){
 
 // Get Commerce from Offre
 module.exports.getCommerce = function(id, callback){
-	User.findById(id)
-		.populate('Commerce')
+	Offre.findById(id)
+		.populate('commerce')
 		.exec(function(err, offre){
-			callback(err, offre.commerces);
+			callback(err, offre.commerce);
 	});
 }
 
@@ -64,19 +64,29 @@ module.exports.getOffreById = function(id,callback){
 }
 
 //Get offres by marque
-module.exports.getOffreByMarque = function(req,callback){
+module.exports.getOffresByMarque = function(req,callback){
+    var marque = req;
+    var resultat = [];
 	Offre.find()
-        .populate( 'Commerce', null, { marque: req } )
-		.exec(function(err, offre){
-			callback(err, offre.commerce);
-	});
+    .populate('commerce') 
+    .exec(function(err, offres){
+        if(err) return err;
+        var cmp= 0;
+        for(var i= 0; i<offres.length; i++){
+            if( offres[i].commerce.marque == marque){
+                resultat[cmp]= offres[i];
+                cmp++;
+            }
+        }
+        callback(err, resultat);
+    });
+    
+
 }
 
-// Get Offre from CommerceID
+// Get Offres from CommerceID
 module.exports.getOffreFromCommerceId = function(id, callback){
 	Offre.find()
-		.populate('Commerce', null, { _id: id })
-		.exec(function(err, offre){
-			callback(err, offre);
-	});
+		.populate('commerce', null, { _id: id })
+		.exec(callback);
 }

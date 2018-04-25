@@ -17,10 +17,13 @@ var db = mongoose.connection;
 var api = require('./routes/api');
 var routes = require('./routes/index');
 var users = require('./routes/users');
-var commerce = require('./routes/commerce');
 var offre = require('./routes/offre');
+var commerce = require('./routes/commerce');
+var reseau = require('./routes/reseauSocial');
+var userApp = require('./routes/userApp');
 
 // Init App
+
 var app = express();
 
 // View Engine
@@ -85,6 +88,8 @@ app.use('/api/commerces', commerce);
 app.use('/api/offres', offre);
 app.use('/', routes);
 app.use('/users', users);
+app.use('/api/reseaux', reseau);
+app.use('/api/userApp', userApp);
 
 // Set Port
 app.set('port', (process.env.PORT || 3000));

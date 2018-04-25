@@ -12,6 +12,7 @@ var querystring = require('querystring');
 
 var User = require('../models/user');
 var Commerce = require('../models/commerce');
+var Offre = require('../models/offre')
 
 var googleMapsClient = require('@google/maps').createClient({
 	key: 'AIzaSyAPsN7xhUSMDdgG8adlUfShMsvjhErgtiQ '
@@ -29,7 +30,7 @@ var googleMapsClient = require('@google/maps').createClient({
     var tmp = 0;
     for(var i = 0; i<obj1.length;i++) {
         for(var j = 0; j<obj2.length;j++) {
-            if(obj1[i] == obj2[j]){
+            if(obj1[i].equals(obj2[j])){
                 result[tmp] = obj1[i];
             } 
         }
@@ -38,10 +39,9 @@ var googleMapsClient = require('@google/maps').createClient({
 }
 
 
-//Get Offre by titre
+//Récupère une offre par titre
 router.get('/nom/:_nom', function(req, res){
     var name = req.params._nom;
-    console.log(name);
 	Offre.getOffreByTitre(name, function(err, offre){
 		if(err){
 			throw err;
@@ -51,10 +51,13 @@ router.get('/nom/:_nom', function(req, res){
 });
 
 
+
 //Get Offres par array de preferences et ou par marque
 router.get('/', function(req, res){
     var query = querystring.parse(req.url.split('?')[1]);
+    console.log(query);
     if(query.preferences && query.marque){
+        console.log("marque & preference");
         var array;
         if (!Array.isArray(query.preferences)){
             array = [query.preferences];
@@ -66,15 +69,16 @@ router.get('/', function(req, res){
             if(errP){
                 throw errP;
             }
-            Offre.getOffreByMarque(query.marque, function(errM, offresM){
+            Offre.getOffresByMarque(query.marque, function(errM, offresM){
                 if(errM){
                     throw errM;
                 }
-                res.json(commonJSON(offresP, offreM));
+                res.json(commonJSON(offresP, offresM));
             });	
         });	
     }
     else if(query.preferences){
+        console.log("preference");
         var array;
         if (!Array.isArray(query.preferences)){
             array = [query.preferences];
@@ -90,7 +94,8 @@ router.get('/', function(req, res){
         });	
     }
     else if(query.marque){
-        Offre.getOffreByMarque(query.marque, function(err, offres){
+        console.log("marque : "+query.marque);
+        Offre.getOffresByMarque(query.marque, function(err, offres){
             if(err){
                 throw err;
             }
@@ -100,12 +105,30 @@ router.get('/', function(req, res){
     
 });
 
-//Affiche toutes les offres
-router.get('/offres/:limit', function(req, res){
+//Recupère n offres
+router.get('/:limit', function(req, res){
 	var limit = req.params.limit;
 	Offre.getOffres(limit, function(err, offres){
 		if (err) throw err;
 		res.json(offres);
+	});
+});
+
+//Recupère les offres à partir de l'id du commercant
+router.get('/commerces/:_id', function(req, res){
+    var id= req.params._id;
+	Offre.getOffreFromCommerceId(id, function(err, offre){
+		if (err) throw err;
+		res.json(offre);
+	});
+});
+
+//Recupère le commercant
+router.get('/commerce/:_id', function(req, res){
+    var id= req.params._id;
+	Offre.getCommerce(id, function(err, commerce){
+		if (err) throw err;
+		res.json(commerce);
 	});
 });
 

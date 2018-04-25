@@ -1,0 +1,36 @@
+<h2 class="page-header">Api</h2>
+<p>Bienvenue dans l'api</p>
++_______+
+|       |
+| API : | 
+|_______|
+
+__________________________________________________________
+
+|> /api/offres/:n
+| Renvoie n offres
+
+|> /api/offres/?marque=marqueP&preferences=preference1&preferences=preference2
+| Renvoie les offres par marque et ou par préferences
+
+|> /api/offres/nom/:nom 
+| Renvoie les offres par leurs nom
+
+|> /commerce/:_id
+
+|> /commerces/:_id
+__________________________________________________________
+
+|> /api/commerces/:_lat/:_lng/:_n
+| Renvoie les n commerces les plus proches par rapport à
+| leurs positions :_lat = latitude et :_lng = longitude
+
+|> /api/commerces/nom/:_nom
+| Renvoie le commerce par son nom :_nom
+
+|> /api/commerces/?categories=cat1&categories=cat2
+| Renvoie les commerces contenant les catégories 
+| entrées dans le tableau ?categories
+
+|> /api/commerces/:_n
+| Renvoie n commerces

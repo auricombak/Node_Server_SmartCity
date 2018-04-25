@@ -96,7 +96,7 @@ module.exports.getCommerceById = function(id, callback){
 
 // Get Commerce by category
 module.exports.getCommercesByCategories = function(req, callback){
-    Commerce.find({categories : {$in : req}},callback);      
+    Commerce.find( {categories : {$in : req}},callback);      
 }
 
 // Get Commerce by name
