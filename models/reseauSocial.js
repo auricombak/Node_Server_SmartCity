@@ -45,27 +45,36 @@ module.exports.createReseauSocial = function(newReseau, callback){
 
 //Check if user is abonne 
 module.exports.isAbonne = function(idR, idU, callback){
+    var res = false;
     ReseauSocial.findById(idR)
-    .populate('abonnes')
     .exec(function(err, reseau){
         if (err) throw err;
-        var users = reseau.abonnes;
-        for(var i = 0; i<users.length; i++){
-            if(user[i]._id == idU){
-                callback(err, true);
+        if(reseau.abonnes != null){
+            var users = reseau.abonnes;
+            for(var i = 0; i<users.length; i++){
+                if(users[i].equals(idU) ){
+                    res = true;
+                }
             }
+            
         }
-        callback(err, false);
+        callback(err, res);
     });
 }
 
-//Check if user is admin
-module.exports.isAdmin = function(idR, idU, callback){
+//Affiche tout abonnes compris, d'un réseau 
+module.exports.afficheTout = function(idR, callback){
     ReseauSocial.findById(idR)
     .populate('abonnes')
+    .exec(callback);
+}
+
+//Check if an user is admin
+module.exports.isAdmin = function(idR, idU, callback){
+    ReseauSocial.findById(idR)
     .exec(function(err, reseau){
         if(err) return err;
-        if( reseau.admin._id == idU){
+        if( reseau.admin.equals(idU)){
             callback(err, true);
         }else{
             callback(err, false);

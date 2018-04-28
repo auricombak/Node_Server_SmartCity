@@ -42,8 +42,13 @@ __________________________________________________________
 
 __________________________________________________________
 
-|>post: /api/reseauSocial/addAbonne
-| { idUser : '', idReseau : '' } Ajoute un utilisateur à un réseau
+|>post: /api/reseauSocial/addAbonne/RP
+| Ajoute un utilisateur à un réseau
+{
+        "idUser": "111",
+        "idReseau": "5ae4a738de23f7583c0219f5",
+        "idAdmin": "775" (Si reseau prive)
+}
 
 |>post: /api/reseauSocial/addAbonne/RP
 | { idUserAdmin : '', idUser : '', idReseau : '' } Ajoute un utilisateur à un réseau privé
@@ -57,12 +62,23 @@ __________________________________________________________
 |>post: /api/reseauSocial/message/:_idR/:_idU
 | Verifie si l'user d'id _idU est membre du réseau d'id _idR
 | si oui poste le message { titre : '', auteur : '', corp: '' }
+{
+     "auteur" : "Moskito32",
+     "titre" : "Bienvenue",
+     "corp" : "Salut tout le monde"
+}
+
 
 |>post: /api/reseauSocial/:_idU
 | Crée un reseau social d'admin :_idU
-| {nom : String, description : String, public : Boolean  }
+{
+	"nom" : "Les bombers",
+	"description" : "Ce groupe réunit tout les fans du film bombers",
+	"public" : "true",
+    "preferences" : "film bombers warazazat"
+}
 
-|>get: /api/reseauSocial/?preferences=preference1&preferences=preference2
+|>get: /api/reseauSocial/?preferences=pref1&preferences=pref2
 | Récupère les réseaux sociaux dont les préférences 
 | sont dans l'array preferences
 
@@ -128,7 +144,7 @@ __________________________________________________________
 | Body : contient la demande {
 |        idUser : idFire,
 |        idResau : idReseau
-|    }
+|}
 
 
 
