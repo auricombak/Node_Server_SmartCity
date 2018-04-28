@@ -72,6 +72,65 @@ __________________________________________________________
 |>get: /api/reseauSocial/nom/:_nom
 | Récupère les réseaus Sociaux par noms :_nom 
 
+__________________________________________________________
+
+|>post: /api/userApp/
+| Crée un utilisateur contenu dans req.body.idFire 
+{
+        "idFire" :"774"
+}
+
+
+|>put: /api/userApp/UI/:_id
+| Met à jour userInfor d'un utilisateur identifié par :_id
+| user.body ( contient UserInfo )
+{
+        "pseudo": "Makilaoo",
+        "phone": "0745544788",
+        "surname": "Salem",
+        "name": "MOHRI",
+        "sexe": "true",
+        "date" : "29/05/1994"
+}
+
+|>put: /api/userApp/SA/:_id
+| Met à jour settingActu d'un utilisateur identifié par :_id
+| user.body ( contient SettingActu )
+{
+        "calendrierParamChecked":"false",
+        "meteoParamChecked":"false",
+        "actualiteParamChecked":"false",
+        "alarmParamChecked":"false",
+        "traficParamChecked":"false"
+}
+
+
+|>post: /api/userApp/Commerce
+| Ajoute un commerce aux favoris d'un utilisateur 
+{
+"idUser":"774",
+"idCommerce":"5adf4bc65351bb27fcf12655"
+}
+
+|>get: /api/userApp/Commerce/:_idU
+| Renvoie les commerces favoris d'un utilisateur 
+| :_idU -> id Firebase de l'utilisateur
+
+|>post: /api/userApp/Demande
+| Ajoute une demande à un utilisateur 
+| Body : contient la demande {
+|        idUser : idFire,
+|        idResau : idReseau
+|    }
+
+|>post: /api/userApp/Demande/Valide
+| Valide une demande à un utilisateur 
+| Body : contient la demande {
+|        idUser : idFire,
+|        idResau : idReseau
+|    }
+
+
 
 +_____________________________+
 |                             |

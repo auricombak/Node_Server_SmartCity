@@ -110,11 +110,6 @@ module.exports.createCommerce = function(commerce, callback){
     commerce.save(callback);
 }
 
-// Ajoute un utilisateur 
-//Si ça merche pas ajouter user._id
-module.exports.addAbonne = function(id,user_id,callback){
-    Commerce.findById(id, callback).sAbonnes.push(user_id);
-}
 
 // Delete Commerce
 module.exports.removeCommerce = function(id, callback){

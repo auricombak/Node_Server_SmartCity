@@ -124,6 +124,13 @@ module.exports.getAbonnes = function(id, callback){
 
 //Get reseauxSociaux by preferences
 module.exports.getReseauSocialByPreferences = function(req, callback){
-    Commerce.find( {preferences : {$in : req}},callback);      
+    ReseauSocial.find( {preferences : {$in : req}}, callback);      
 }
 
+/*module.exports.getReseauSocialByPreferences = function(req, callback){
+    Commerce.find( {preferences : {$nor : req}},function(err, nocom){
+        Commerce.find({$nor : nocom}, function(err, commerces){
+            callback(err, commerces)
+        })
+    });      
+}*/

@@ -3,9 +3,8 @@ var mongoose = require('mongoose');
 // User Schema
 var UserAppSchema = mongoose.Schema({
     idFire: {
-        type: String,
-        index:true
-	},
+        type: String
+    },
     notifications: [String],
     infoUser:{
         pseudo:{
@@ -75,30 +74,31 @@ module.exports.getUserById = function(id, callback){
 }
 
 //Get Commerces
-module.exports.getUsers = function(id,callback){
+module.exports.getCommerces = function(id,callback){
     var query = {idFire:id};
 	UserApp.findOne(query)
-        .populate( 'Commerce')
+        .populate( 'commerces')
 		.exec(function(err, user){
 			callback(err, user.commerces);
 	});
 }
 
-//Update settingActualite
-module.exports.updateUser = function(id, info, callback){
-    var query = {idFire:id};
-    var update ={
-        infoUser: info
-    }
-    UserApp.findOneAndUpdate(query, update, callback);
-}
 
 //Update infoUser
-module.exports.updateUser = function(id, setting, callback){
+module.exports.updateUser = function(id, infos, callback){
     var query = {idFire:id};
-    var update ={
-        settingActualite: setting
-    }
-    UserApp.findOneAndUpdate(query, update, callback);
+    UserApp.findOne(query, function(err, user){
+        user.infoUser = infos;
+        user.save(callback);
+    });
+}
+
+//Update settingActualite
+module.exports.updateActu = function(id, setting, callback){
+    var query = {idFire:id};
+    UserApp.findOne(query, function(err, user){
+        user.settingActualite = setting;
+        user.save(callback);
+    });
 }
 
