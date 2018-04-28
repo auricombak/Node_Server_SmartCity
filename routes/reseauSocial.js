@@ -104,7 +104,7 @@ router.post('/message/:_idR/:_idU', function(req, res){
 
     console.log(idReseau);
 
-    ReseauSocial.isAbonne(idUser, function(err, isAbonne){
+    ReseauSocial.isAbonne(idReseau, idUser, function(err, isAbonne){
         if (err) throw err;
         if(isAbonne){
             var titre = req.body.titre;
@@ -119,7 +119,7 @@ router.post('/message/:_idR/:_idU', function(req, res){
         
             ReseauSocial.getReseauSocialById(idReseau, function(err, reseau){
                 if (err) throw err;
-                reseau.message.push(newMessage);
+                reseau.messages.push(newMessage);
                 reseau.save(function(err, reseau){
                     if (err) throw err;
                     res.json(reseau);

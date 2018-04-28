@@ -61,7 +61,7 @@ __________________________________________________________
 
 |>post: /api/reseauSocial/message/:_idR/:_idU
 | Verifie si l'user d'id _idU est membre du réseau d'id _idR
-| si oui poste le message { titre : '', auteur : '', corp: '' }
+| si oui poste le message
 {
      "auteur" : "Moskito32",
      "titre" : "Bienvenue",
