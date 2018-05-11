@@ -23,7 +23,7 @@ router.get('/:_limit', function(req, res){
 		if(err){
 			throw err;
 		}
-		res.json(commerces);
+		res.json({res:commerces});
 	});	
 });
 
@@ -36,7 +36,7 @@ router.get('/:_lat/:_lng/:_limit', function(req, res){
 		if(err){
 			throw err;
 		}
-		res.json(commerces);
+		res.json({res:commerces});
 	});	
 });
 
@@ -49,7 +49,7 @@ router.get('/nom/:_nom', function(req, res){
 		if(err){
 			throw err;
 		}
-		res.json(commerce);
+		res.json({res:commerces});
 	});	
 });
 
@@ -69,7 +69,7 @@ router.get('/', function(req, res){
             if(err){
                 throw err;
             }
-            res.json(commerces);
+            res.json({res:commerces});
         });	
     }
 });

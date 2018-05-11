@@ -43,7 +43,7 @@ router.post('/', function(req, res){
 			
 	UserApp.createUser(newUser, function(err, user){
 		if(err) throw err;
-		res.json(user);
+		res.json({res :upser});
 	});
 
 });
@@ -62,7 +62,7 @@ router.put('/UI/:_id', function(req, res){
 
     UserApp.updateUser(idFire, infos, function(err, upser){
         if(err) throw err;
-        res.json(upser);
+        res.json({res :upser});
     });
 });
 
@@ -80,7 +80,7 @@ router.put('/SA/:_id', function(req, res){
     };
     UserApp.updateActu(idFire, settings, function(err,  upser){
         if (err) throw err;
-        res.json(upser);
+        res.json({res :upser});
     });
 
 });
@@ -95,7 +95,7 @@ router.post('/Commerce', function(req, res){
         user.commerces.push(idCommerce);
         user.save(function(err, upser){
             if(err) throw err;
-            res.json(upser);
+            res.json({res :upser});
         });
     });
 });
@@ -105,7 +105,7 @@ router.get('/Commerce/:_idU', function(req, res){
     var idFire = req.params._idU;
     UserApp.getCommerces(idFire, function(err,commerces){
         if(err) throw err;
-        res.json(commerces);
+        res.json({res :commerces});
     });
 });
 

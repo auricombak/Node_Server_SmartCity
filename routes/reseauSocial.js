@@ -23,7 +23,7 @@ router.get('/:_limit', function(req, res){
 		if(err){
 			throw err;
 		}
-		res.json(reseaux);
+		res.json({res:reseaux});
 	});	
 });
 
@@ -35,7 +35,7 @@ router.get('/nom/:_nom', function(req, res){
 		if(err){
 			throw err;
 		}
-		res.json(reseau);
+		res.json({res:reseaux});
 	});	
 });
 
@@ -54,7 +54,7 @@ router.get('/create/', function(req, res){
             if(err){
                 throw err;
             }
-            res.json(reseaux);
+            res.json({res:reseaux});
         });	
     }
 });
@@ -86,7 +86,7 @@ router.post('/create/:_id', function(req, res){
         ReseauSocial.createReseauSocial(newReseau, function(err, reseau){
             if(err) throw err;
             console.log("Ajout du réseau social : "+ reseau.nom);
-            res.json(reseau);
+            res.json({res:reseau});
         });
     
     });
@@ -122,7 +122,7 @@ router.post('/message/:_idR/:_idU', function(req, res){
                 reseau.messages.push(newMessage);
                 reseau.save(function(err, reseau){
                     if (err) throw err;
-                    res.json(reseau);
+                    res.json({res:reseau});
                 });
             });
         }

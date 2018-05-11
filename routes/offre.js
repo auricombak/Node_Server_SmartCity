@@ -46,7 +46,7 @@ router.get('/nom/:_nom', function(req, res){
 		if(err){
 			throw err;
 		}
-		res.json(offre);
+		res.json({res:offre});
 	});	
 });
 
@@ -73,7 +73,7 @@ router.get('/', function(req, res){
                 if(errM){
                     throw errM;
                 }
-                res.json(commonJSON(offresP, offresM));
+                res.json( {res : { offresP, offresM}});
             });	
         });	
     }
@@ -90,7 +90,7 @@ router.get('/', function(req, res){
             if(err){
                 throw err;
             }
-            res.json(offres);
+            res.json({res:offre});
         });	
     }
     else if(query.marque){
@@ -99,7 +99,7 @@ router.get('/', function(req, res){
             if(err){
                 throw err;
             }
-            res.json(offres);
+            res.json({res:offre});
         });	
     }
     
@@ -110,7 +110,7 @@ router.get('/:limit', function(req, res){
 	var limit = req.params.limit;
 	Offre.getOffres(limit, function(err, offres){
 		if (err) throw err;
-		res.json(offres);
+		res.json({res:offre});
 	});
 });
 
@@ -119,7 +119,7 @@ router.get('/commerces/:_id', function(req, res){
     var id= req.params._id;
 	Offre.getOffreFromCommerceId(id, function(err, offre){
 		if (err) throw err;
-		res.json(offre);
+		res.json({res:offre});
 	});
 });
 
@@ -128,7 +128,7 @@ router.get('/commerce/:_id', function(req, res){
     var id= req.params._id;
 	Offre.getCommerce(id, function(err, commerce){
 		if (err) throw err;
-		res.json(commerce);
+		res.json({res:offre});
 	});
 });
 
