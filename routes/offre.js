@@ -110,7 +110,7 @@ router.get('/:limit', function(req, res){
 	var limit = req.params.limit;
 	Offre.getOffres(limit, function(err, offres){
 		if (err) throw err;
-		res.json({res:offre});
+		res.json({res:offres});
 	});
 });
 

@@ -4,6 +4,9 @@ var bcrypt = require('bcryptjs');
 
 var SchemaTypes = mongoose.Schema.Types;
 
+var googleMapsClient = require('@google/maps').createClient({
+	key: 'AIzaSyBoNZA0qEnOBa4FRS-v29xgYxMB8bfeTLU  '
+  });
 
 //  Schema
 var CommerceSchema = mongoose.Schema({
@@ -73,9 +76,17 @@ module.exports.getCommercesByDistances = function(position,limit, callback){
                         closest=commerces[i];
                     }
                 }
-                result[j] = closest;
+
+                if(closest != ""){
+                    
+                    result[j] = closest;
+                }
+                
                 j++;
             }
+
+
+
             callback(err, result);
         }catch(err){ callback(err, commerces); }
     });
