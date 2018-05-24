@@ -1,7 +1,3 @@
-Sécurité : 
-
-Les actions se font via les _id crées dans la base mongo 
-Le passage par paramètre des ids Firebase est vérifié
 
 +_______+
 |       |
