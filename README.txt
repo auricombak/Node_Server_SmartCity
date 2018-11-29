@@ -1,6 +1,9 @@
-#API
+
+# API Nodejs
 
 __________________________________________________________
+
+## Offre
 
 |> /api/offres/:n
 | Renvoie n offres
@@ -18,6 +21,8 @@ __________________________________________________________
 | Renvoie toute les offres d'un commerce d'id :_id
 __________________________________________________________
 
+## Commerces
+
 |> /api/commerces/:_lat/:_lng/:_n
 | Renvoie les n commerces les plus proches par rapport à
 | leurs positions :_lat = latitude et :_lng = longitude
@@ -33,6 +38,8 @@ __________________________________________________________
 | Renvoie n commerces
 
 __________________________________________________________
+
+## reseauSocial
 
 |>post: /api/reseauSocial/addAbonne/RP
 | Ajoute un utilisateur à un réseau
@@ -81,6 +88,8 @@ __________________________________________________________
 | Récupère les réseaus Sociaux par noms :_nom 
 
 __________________________________________________________
+
+##  UserApp
 
 |>post: /api/userApp/
 | Crée un utilisateur contenu dans req.body.idFire 
@@ -140,12 +149,12 @@ __________________________________________________________
 
 
 
-+_____________________________+
-|                             |
-| Fonctions sur les modèles : | 
-|_____________________________| 
+# Fonctions mongo
 
 __________________________________________________________
+
+## Commerce
+
 Commerce.removeCommerce = function(id, callback);
 Commerce.addAbonne = function(id,user_id,callback);
 Commerce.createCommerce = function(commerce, callback);
@@ -155,6 +164,9 @@ Commerce.getCommerceById = function(id, callback);
 Commerce.getCommerces = function(limit, callback);
 Commerce.getCommercesByDistance = function(dist, limit, callback)
 __________________________________________________________
+
+## User
+
 User.getUsers = function(callback, limit);
 User.getCommerces = function(id, callback);
 User.createUser = function(newUser, callback);
@@ -162,6 +174,9 @@ User.getUserByUsername = function(username, callback);
 User.getUserById = function(id,callback);
 User.comparePassword = function(candidatePassword, hash, callback);
 __________________________________________________________
+
+## UserApp
+
 UserApp.getUserByEmail = function(email, callback)
 UserApp.createUser = function(newUser, callback)
 UserApp.getUserById = function(id, callback)
@@ -169,6 +184,9 @@ UserApp.getCommerces = function(id,callback)
 UserApp.updateUser = function(id, info, callback)
 UserApp.updateUser = function(id, setting, callback)
 __________________________________________________________
+
+## ReseauSocial
+
 ReseauSocial.getAdmin = function(id, callback)
 ReseauSocial.getAbonnes = function(id, callback)
 ReseauSocial.getReseauxSociauxAbonne = function(id,callback)
@@ -178,6 +196,9 @@ ReseauSocial.getReseauSocialById = function(id, callback)
 ReseauSocial.getReseauSocialByName = function(name, callback)
 ReseauSocial.createReseauSocial = function(newReseau, callback)
 __________________________________________________________
+
+## Offre
+
 Offre.getOffresByMarque = function(req,callback)
 Offre.getOffreById = function(id,callback)
 Offre.getOffreByPreferences = function(req, callback)
